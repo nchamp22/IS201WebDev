@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Tic Tac Toe</title>
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f2f2f2;
+    overflow: hidden;
+  }
+  .container {
+    text-align: center;
+  }
+  h1 {
+    margin-bottom: 20px;
+  }
+  .board {
+    display: grid;
+    grid-template-columns: repeat(3, 150px);
+    grid-template-rows: repeat(3, 150px);
+    gap: 8px;
+    margin: 0 auto 20px;
+  }
+  .cell {
+    background: white;
+    border-radius: 10px;
+    font-size: 3.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background 0.2s;
+    user-select: none;
+  }
+  .cell:hover {
+    background: #eee;
+  }
+  .cell.taken {
+    cursor: not-allowed;
+  }
+  .status {
+    margin: 10px 0;
+    font-weight: bold;
+    font-size: 2rem;
+  }
+  button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background: #0077cc;
+    color: white;
+    transition: background 0.2s;
+  }
+  button:hover {
+    background: #005fa3;
+  }
+  .confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: red;
+    top: 0;
+    left: 50%;
+    pointer-events: none;
+    opacity: 0.8;
+    animation: fall 3s linear forwards;
+  }
+  @keyframes fall {
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Tic Tac Toe</h1>
+    <div class="board" id="board"></div>
+    <div class="status" id="status">Player X's turn</div>
+    <button onclick="resetGame()">Restart</button>
+  </div>
+
+<script>
+  const boardEl = document.getElementById('board');
+  const statusEl = document.getElementById('status');
+  let board = Array(9).fill(null);
+  let currentPlayer = 'X';
+  let gameOver = false;
+
+  function createBoard() {
+    boardEl.innerHTML = '';
+    board.forEach((val, idx) => {
+      const cell = document.createElement('div');
+      cell.classList.add('cell');
+      if (val) {
+        cell.textContent = val;
+        cell.classList.add('taken');
+      }
+      cell.addEventListener('click', () => handleClick(idx));
+      boardEl.appendChild(cell);
+    });
+  }
+
+  function handleClick(index) {
+    if (board[index] || gameOver) return;
+    board[index] = currentPlayer;
+    const winCombo = checkWin(currentPlayer);
+    if (winCombo) {
+      statusEl.textContent = `Player ${currentPlayer} Wins! 🎉`;
+      statusEl.style.fontSize = "3rem";
+      gameOver = true;
+      launchConfetti();
+    } else if (board.every(cell => cell)) {
+      statusEl.textContent = "It's a Draw!";
+      statusEl.style.fontSize = "2rem";
+      gameOver = true;
+    } else {
+      currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+      statusEl.textContent = `Player ${currentPlayer}'s turn`;
+    }
+    createBoard();
+  }
+
+  function checkWin(player) {
+    const wins = [
+      [0,1,2],[3,4,5],[6,7,8],
+      [0,3,6],[1,4,7],[2,5,8],
+      [0,4,8],[2,4,6]
+    ];
+    return wins.find(combo => combo.every(i => board[i] === player));
+  }
+
+  function resetGame() {
+    board = Array(9).fill(null);
+    currentPlayer = 'X';
+    gameOver = false;
+    statusEl.textContent = "Player X's turn";
+    statusEl.style.fontSize = "2rem";
+    createBoard();
+  }
+
+  function launchConfetti() {
+    for (let i=0; i<50; i++) {
+      const conf = document.createElement('div');
+      conf.classList.add('confetti');
+      conf.style.left = Math.random()*window.innerWidth + "px";
+      conf.style.background = `hsl(${Math.random()*360}, 80%, 60%)`;
+      conf.style.animationDuration = (2 + Math.random()*2) + "s";
+      document.body.appendChild(conf);
+      setTimeout(() => conf.remove(), 3000);
+    }
+  }
+
+  createBoard();
+</script>
+</body>
+</html>

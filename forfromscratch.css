@@ -1,0 +1,71 @@
+/* Body and page settings */
+body {
+    background-image: url('PHLflag.jpg.avif'); /* your flag image file */
+    background-size: cover;       /* make it cover the whole page */
+    background-repeat: no-repeat;
+    background-position: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Add a slightly transparent container for readability */
+.mainbody {
+    margin: 0;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.85); /* white with 85% opacity */
+    border: none;
+    text-align: left;
+}
+
+/* Header */
+.header {
+    text-align: left;
+    background-color: rgba(204, 231, 255, 0.85); /* semi-transparent so flag shows through */
+    padding: 15px;
+    border-bottom: 2px solid #555;
+}
+
+.header a {
+    color: #004466;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.header a:hover {
+    text-decoration: underline;
+}
+
+/* Images */
+img {
+    display: block;
+    margin: 10px 0;
+    width: 400px;
+    max-width: 90%;
+    border: 2px solid #004466;
+    border-radius: 5px;
+}
+
+/* Headings */
+h1, h2 {
+    color: #004466;
+}
+
+/* Lists */
+ol, ul {
+    margin-left: 25px;
+    margin-bottom: 15px;
+}
+
+/* Iframes (YouTube, Tableau) */
+iframe {
+    display: block;
+    margin: 10px 0;
+    max-width: 90%;
+}
+
+/* Tableau container */
+.tableauPlaceholder {
+    margin: 10px 0;
+}
